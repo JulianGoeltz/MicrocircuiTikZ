@@ -1,0 +1,47 @@
+\begin{tikzpicture}[
+    % font={\sffamily \small},
+    scale=1.,
+    >=latex,
+    transform shape,
+]
+    \useasboundingbox (0,0) rectangle (4.7, 4.4);
+
+    \def\numInputs{4}
+    \def\numHidden{5}
+    \def\numLabel{4}
+
+    \def\layerSeparation{1.2}
+    \def\neuronSeparation{0.8}
+    \def\xshiftInput{0.5 * \neuronSeparation}
+    \def\xshiftHidden{0.0 * \neuronSeparation}
+    \def\xshiftLabel{0.5 * \neuronSeparation}
+
+    \def\yOffset{0.5}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+    \foreach \name / \i in {1,...,\numInputs}
+        \pyramidalNeuron{\xshiftInput + \i * \neuronSeparation}{\yOffset}{}{input-\name}{0.8}{block};
+
+    \pgfmathsetmacro{\yOffset}{\yOffset + \layerSeparation}
+    \foreach \name / \i in {1,...,\numHidden}
+        \pyramidalNeuron{\xshiftHidden + \i * \neuronSeparation}{\yOffset}{}{hidden-\name}{0.8}{};
+
+    \pgfmathsetmacro{\yOffset}{\yOffset + \layerSeparation}
+    \foreach \name / \i in {1,...,\numLabel}
+        \pyramidalNeuron{\xshiftLabel + \i * \neuronSeparation}{\yOffset}{}{label-\name}{0.8}{};
+
+
+
+    \foreach \name / \i in {1,...,\numLabel}{
+        \draw (2.25, \yOffset + 0.9) 
+            .. controls ([xshift=0.2cm]label-\name-apicalTipR)
+            % .. controls (\xshiftLabel + \i * \neuronSeparation + 2 * \constApicalBrnX, \yOffset - 0.25 * \layerSeparation)
+            .. (label-\name-apicalR)
+        ;
+
+    }
+    \node[ anchor=south] at (2.25, \yOffset + 0.95) {$1-p(u)$};
+
+
+
+\end{tikzpicture}
+

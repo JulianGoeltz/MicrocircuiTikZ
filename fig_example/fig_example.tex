@@ -1,0 +1,38 @@
+% tikzpic.tex
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage[outline]{contour}
+
+\usepackage{rotating}
+
+\begin{document}
+
+\def\layersep{1.5cm}
+
+
+\input{../pyramidalNeuron.tex}
+
+\begin{tikzpicture}[
+    % font={\sffamily \small},
+    scale=1.,
+    >=latex,
+    transform shape,
+]
+    \useasboundingbox (0,0) rectangle (10,10);
+
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (0.2, 9.8) {\large \textbf a};
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (0.2, 9.8) {\input{panelA}};
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (0.2, 4.6) {\large \textbf b};
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (0.2, 4.6) {\input{panelB}};
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (5.1, 4.5) {\large \textbf c};
+    \node[inner sep=0pt,  anchor=north west] (whitehead) at (5.1, 4.5) {\input{panelC}};
+
+\end{tikzpicture}
+
+\end{document}

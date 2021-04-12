@@ -1,0 +1,94 @@
+\begin{tikzpicture}[
+    % font={\sffamily \small},
+    scale=1.,
+    >=latex,
+    transform shape,
+]
+    \useasboundingbox (0,0) rectangle (9.6, 5);
+
+    \def\numInputs{4}
+    \def\numHidden{5}
+    \def\numLabel{4}
+
+    \def\layerSeparation{1.4}
+    \def\neuronSeparation{0.8}
+    \def\xshiftInput{0.5 * \neuronSeparation}
+    \def\xshiftHidden{0.0 * \neuronSeparation}
+    \def\xshiftLabel{0.5 * \neuronSeparation}
+
+    \def\yOffset{0.8}
+    % This is the same as writing \foreach \name / \y in {1/1,2/2,3/3,4/4}
+    \foreach \name / \i in {1,...,\numInputs}
+        \pyramidalNeuron{\xshiftInput + \i * \neuronSeparation}{\yOffset}{}{input-\name}{1}{block};
+
+    \pgfmathsetmacro{\yOffset}{\yOffset + \layerSeparation}
+    \foreach \name / \i in {1,...,\numHidden}
+        \pyramidalNeuron{\xshiftHidden + \i * \neuronSeparation}{\yOffset}{}{hidden-\name}{1}{};
+
+    \pgfmathsetmacro{\yOffset}{\yOffset + \layerSeparation}
+    \foreach \name / \i in {1,...,\numLabel}
+        \pyramidalNeuron{\xshiftLabel + \i * \neuronSeparation}{\yOffset}{}{label-\name}{1}{};
+
+    % errors
+    \pgfmathsetmacro{\yOffset}{\yOffset + 0.8 * \layerSeparation}
+    \foreach \name / \i in {1,...,\numLabel} {
+        \draw (\xshiftLabel + \i * \neuronSeparation, \yOffset) 
+            .. controls ([xshift=0.2cm]label-\name-apicalTipR)
+            .. (label-\name-apicalR);
+        \node[yshift=0.15cm] (whitehead) at (\xshiftLabel + \i * \neuronSeparation, \yOffset) 
+            {\tiny  $e_\name$};
+    }
+
+
+    % FOR REWARD LATER
+    % \foreach \name / \i in {1,...,\numLabel}
+    %     \draw (2., \yOffset + 1) 
+    %         .. controls ([xshift=0.2cm]label-\name-apicalTipR)
+    %         % .. controls (\xshiftLabel + \i * \neuronSeparation + 2 * \constApicalBrnX, \yOffset - 0.25 * \layerSeparation)
+    %         .. (label-\name-apicalR);
+
+
+    \coordinate (ellipseCoord) at ($(hidden-\numHidden)!0.5!(label-\numLabel)$);
+
+    \draw[dashed, rotate around={-75: (ellipseCoord)}] (ellipseCoord) ellipse (1.2 * \layerSeparation cm and 0.7cm);
+    \node[rotate around={-75: (ellipseCoord)}] (ellipseSummit1) at ($(ellipseCoord)+(0:1.2 * \layerSeparation cm and 0.7 cm)$) {};
+    \node[rotate around={-75: (ellipseCoord)}] (ellipseSummit2) at ($(ellipseCoord)+(180:1.2 * \layerSeparation cm and 0.7 cm)$) {};
+
+
+
+    % %%%%%%%%%%%%%%% ZOOMED PART
+    \def\yOffset{1.5}
+    \def\xOffset{6.5}
+    \def\zoomScale{1.7}
+    \pyramidalNeuron{\xOffset}{\yOffset + 2.3}{0.7}{top}{\zoomScale}{};
+    \pyramidalNeuron{\xOffset + 1.5}{\yOffset}{}{bottom}{\zoomScale}{block};
+
+
+    % connections
+    \draw[-Circle] (bottom-somaR) .. controls ([xshift=1.0cm,yshift=-1.0cm ]bottom-apicalTipR) and ([xshift=0.0cm,yshift=1.0cm]bottom-apicalTipR) .. (top-basalR);
+
+    \draw[-Circle] ([yshift=-0.7cm, xshift=1cm]bottom-basalR) .. controls ([xshift=1cm]bottom-basalR) .. (bottom-basalR);
+    \draw[-Circle] ([yshift=-0.7cm, xshift=-1cm]bottom-basalL) .. controls ([xshift=-1cm]bottom-basalL) .. (bottom-basalL);
+
+    \draw[->, dotted, line width=0.2mm] (top-somaL) .. controls ($([xshift=-1.55cm]top-somaL)!0.2!(bottom-apicalL)$) .. ([yshift=0.05cm]bottom-apicalL);
+
+    \draw[->, dotted, line width=0.2mm] ([xshift=0.05cm]top-IN-top) .. controls ($([yshift=0.5cm]top-IN-top)!0.2!(bottom-apicalL)$) .. ([yshift=-0.05cm]bottom-apicalL);
+
+    \draw[-Circle, dotted, line width=0.2mm] (bottom-somaL) -- (top-IN-denR);
+
+    \draw[->, densely dashdotted, line width=0.2mm] (top-somaL) .. controls ($([xshift=-1.5cm,yshift=0.5cm]top-somaL)!0.2!(top-IN-top)$) .. ([xshift=-0.05cm]top-IN-top);
+
+
+    % zoom effect
+    \draw [dashed] (ellipseSummit1) -- ([yshift=-0.7cm, xshift=-1cm]bottom-basalL);
+    \draw [dashed] (ellipseSummit2) -- (top-apicalTipL);
+    
+    % \foreach \name in {soma, apical, apicalTip, basal} {
+    %     \draw (5, 5) -- (top-\name R);
+    %     \draw (5, 5) -- (top-\name L);
+    % }
+    % \draw (10, 5) -- ([yshift=-1cm]top-basalEnd);
+    % \draw (10, 5) -- ([yshift=-1cm]top-IN);
+
+\end{tikzpicture}
+

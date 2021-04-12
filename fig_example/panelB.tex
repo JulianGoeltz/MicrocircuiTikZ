@@ -1,0 +1,20 @@
+\begin{tikzpicture}[
+    % font={\sffamily \small},
+    scale=1.,
+    >=latex,
+    transform shape,
+]
+    \useasboundingbox (0,0) rectangle (4.7, 4.4);
+
+    \def\zoomScale{1.8}
+
+    \pyramidalNeuron{2.2}{1.8}{}{thaught}{\zoomScale}{block};
+
+
+
+    % connections
+    \draw[-Circle] (thaught-somaR) ..  controls ([xshift=1.cm]thaught) ..  ([xshift=1.cm, yshift=1.5cm]thaught); 
+    \node[anchor=south,] () at ([xshift=1.cm, yshift=1.7cm]thaught) {teacher nudge};
+
+\end{tikzpicture}
+
