@@ -3,8 +3,8 @@
 \definecolor{mplColoursC2}{rgb}{0.17254901960784313, 0.6274509803921569, 0.17254901960784313}
 \definecolor{mplColoursC3}{rgb}{0.8392156862745098, 0.15294117647058825, 0.1568627450980392}
 
-\colorlet{clNeuronSoma}{black!50}
-\colorlet{clNeuronBasal}{mplColoursC0}
+\colorlet{clNeuronSoma}{mplColoursC1}
+\colorlet{clNeuronBasal}{mplColoursC1}
 \colorlet{clNeuronApical}{mplColoursC1}
 \colorlet{clNeuronIN}{mplColoursC2}
 
@@ -23,11 +23,11 @@
     \def\x{#1};
     \def\y{#2}
 
-    \def\DesignLW{0.35mm * #5}
+    \def\DesignLW{0.2mm * #5}
     \def\DesignLWIN{0.3mm * #5}
     \def\CoordPadding{0.05 * #5}
 
-    \def\constApicalMainLength{0.25 * #5}
+    \def\constApicalMainLength{0.4 * #5}
     \def\constApicalBrnY{\constApicalMainLength + 0.25 * #5}
     \def\constApicalBrnX{0.25 * #5}
     \def\constSomaHeight{0.3 * #5}
@@ -39,29 +39,22 @@
     }{
         \pgfmathsetmacro{\constINdistance}{\constSomaHeight + \constBasalHeight + #3 * #5}
     }
-    \def\constINheight{0.17 * #5}
-    \def\constINwidth{0.10 * #5}
-    \def\constINdendrite{0.10 * #5}
+    \def\constINradius{0.20 * #5}
 
     % apical main + left
-    \draw[color=clNeuronApical, line cap=round, line width=\DesignLW] (\x, \y-0.1) -- (\x, \y+\constApicalMainLength) -- (\x -\constApicalBrnX, \y+\constApicalBrnY);
+    \draw[color=clNeuronApical, line width=\DesignLW] (\x, \y) -- (\x, \y+\constApicalMainLength) -- (\x -\constApicalBrnX, \y+\constApicalBrnY);
     % apical right
-    \draw[color=clNeuronApical, line cap=round, line width=\DesignLW] (\x, \y+\constApicalMainLength) -- (\x +\constApicalBrnX, \y+\constApicalBrnY);
-    % basal
-    \draw[color=clNeuronBasal, line cap=round, line width=\DesignLW] (\x, \y-\constSomaHeight) -- (\x, \y-\constSomaHeight-\constBasalHeight);
+    \draw[color=clNeuronApical, line width=\DesignLW] (\x, \y+\constApicalMainLength) -- (\x +\constApicalBrnX, \y+\constApicalBrnY);
     % soma
     \filldraw[color=clNeuronSoma] (\x, \y) -- (\x + \constSomaX, \y - \constSomaHeight) -- (\x - \constSomaX, \y - \constSomaHeight) -- cycle;
+    % basal
+    \draw[color=clNeuronBasal, line width=\DesignLW] (\x, \y-\constSomaHeight) -- (\x, \y-\constSomaHeight-\constBasalHeight);
 
     % if arg6 is empty, draw interneuron
     \ifthenelse{ \equal{#6}{} }{
         % \draw[dotted] (\x, \y - \constINdistance) circle (\constINradius cm);
-        \draw[color=clNeuronIN, line width=\DesignLWIN, line cap=round] (\x, \y - \constINdistance - 0.5 * \constINheight) -- (\x, \y - \constINdistance - \constINheight - \constINdendrite);
-        % \node[regular polygon, fill=clNeuronIN, line width=\DesignLWIN, anchor=center, minimum size=\constINradius cm, dotted] (#4-IN) at (\x, \y - \constINdistance) {};
-
-        \fill[fill=clNeuronIN, line width=0] (\x, \y - \constINdistance) ellipse (\constINwidth cm and \constINheight cm);
-        \coordinate (#4-IN-top) at (\x, \y - \constINdistance + \constINheight);
-        \coordinate (#4-IN-denL) at (\x - \CoordPadding, \y - \constINdistance - \constINheight - 0.5 * \constINdendrite);
-        \coordinate (#4-IN-denR) at (\x + \CoordPadding, \y - \constINdistance - \constINheight - 0.5 * \constINdendrite);
+        \node[circle, draw=clNeuronIN, line width=\DesignLWIN, anchor=center, minimum size=\constINradius cm, dotted] (#4-IN) at (\x, \y - \constINdistance) {};
+        % \coordinate (#4-IN-position) at (\x, \y - \constINdistance);
     }{}
 
     \coordinate (#4) at (\x, \y);
